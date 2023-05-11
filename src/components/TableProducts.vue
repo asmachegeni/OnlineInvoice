@@ -27,8 +27,8 @@
         v-for="(info, index) in invoice.Buyer_and_seller_information"
         :key="index"
       >
-      <h2 v-if="info.type==='seller'">مشخصات فروشنده</h2>
-      <h2 v-else>مشخصات خریدار</h2>
+        <h2 v-if="info.type === 'seller'">مشخصات فروشنده</h2>
+        <h2 v-else>مشخصات خریدار</h2>
 
         <label for="invoice_date">:نام شخص حقیقی / حقوقی</label>
         <input type="text" id="invoice_date" v-model="info.name" required />
@@ -107,10 +107,13 @@
       <button type="button" @click="addItem">اضافه کردن ردیف جدید</button>
       <button type="submit">Add Invoice</button>
     </form>
+    <button @click="exportExcel()">دانلود فایل اکسل</button>
   </div>
 </template>
 
 <script>
+import ExcelJS from "exceljs";
+import FileSaver from "file-saver";
 export default {
   data() {
     return {
@@ -178,6 +181,33 @@ export default {
     },
     deleteItem(index) {
       this.invoice.items.splice(index, 1);
+    },
+    exportExcel() {
+      //  ---------------------------excel--------------------------
+
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet("1");
+      worksheet.columns = [
+        { header: "شماره فاکتور", key: "invoiceNumber" },
+        { header: "Date", key: "date" },
+        { header: "Amount", key: "amount" },
+      ];
+      worksheet.addRow({
+        invoiceNumber: "INV-001",
+        date: "2023-05-01",
+        amount: 100,
+      });
+      worksheet.addRow({
+        invoiceNumber: "INV-002",
+        date: "2023-05-02",
+        amount: 200,
+      });
+      workbook.xlsx
+        .writeBuffer()
+        .then((buffer) =>
+          FileSaver.saveAs(new Blob([buffer]), `${Date.now()}_feedback.xlsx`)
+        )
+        .catch((err) => console.log("Error writing excel export", err));
     },
   },
 };
