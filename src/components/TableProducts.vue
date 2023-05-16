@@ -200,7 +200,9 @@ export default {
       ];
 
       // --------------------------------products---------------------------------------------
-      worksheet.getRow(12).values = [
+       worksheet.mergeCells(12, 1, 13, 23);
+      worksheet.getCell(12, 1).value = " مشخصات کالا یا خدمات مورد معامله";
+      worksheet.getRow(14).values = [
         "کد کالا",
         "شرح کالا یا خدمات",
         "تعداد / مقدار",
