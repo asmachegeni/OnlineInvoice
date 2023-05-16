@@ -1,7 +1,6 @@
 <template>
   <div id="invoice">
     <!-- <form @submit.prevent="addInvoice"> -->
-    <!-- <div id="header"> -->
     <div id="date-serial">
       <div class="form-group">
         <label for="Serial_number" id="lab1">شماره سریال</label>
@@ -10,6 +9,7 @@
           id="Serial_number"
           v-model="invoice.Serial_number"
           required
+          placeholder="......................"
         />
       </div>
       <div class="form-group">
@@ -23,70 +23,94 @@
       </div>
     </div>
     <h1 id="title">صورتحساب فروش کالا و خدمات</h1>
-    <!-- </div> -->
     <!-- -------------------------------------------------------------- -->
 
     <div
-      class="form-group2"
       v-for="(info, index) in invoice.Buyer_and_seller_information"
       :key="index"
     >
       <h2 v-if="info.type === 'seller'">مشخصات فروشنده</h2>
       <h2 v-else>مشخصات خریدار</h2>
 
-      <div class="section">
-        <label for="invoice_date">:نام شخص حقیقی / حقوقی</label>
-        <input type="text" class="invoice_date" v-model="info.name" required />
-        <label for="invoice_date">:شماره اقتصادی</label>
-        <input
-          type="text"
-          class="invoice_date"
-          v-model="info.Economical_number"
-          required
-        />
-        <label for="invoice_date">:شماره ثبت / شماره ملی</label>
-        <input
-          type="text"
-          class="invoice_date"
-          v-model="info.registration_number"
-          required
-        />
-      </div>
-      <div class="section">
-        <label for="invoice_date">نشانی کامل: استان:</label>
-        <input
-          type="text"
-          class="invoice_date"
-          v-model="info.province"
-          required
-        />
-        <label for="invoice_date">شهرستان</label>
-        <input
-          type="text"
-          class="invoice_date"
-          v-model="info.county"
-          required
-        />
-        <label for="invoice_date">کد پستی 10 رقمی</label>
-        <input
-          type="text"
-          class="invoice_date"
-          v-model="info.Postal_code"
-          required
-        />
-        <label for="invoice_date">شهر</label>
-        <input type="text" class="invoice_date" v-model="info.city" required />
-      </div>
-      <div class="section">
-        <label for="invoice_date">نشانی</label>
-        <input
-          type="text"
-          class="invoice_date"
-          v-model="info.address"
-          required
-        />
-        <label for="invoice_date">شماره تلفن / نمابر</label>
-        <input type="text" class="invoice_date" v-model="info.tel" required />
+      <div class="form-group2">
+        <div class="section">
+          <label for="invoice_date">نام شخص حقیقی / حقوقی</label>
+          <input
+            type="text"
+            class="invoice_date"
+            v-model="info.name"
+            required
+            placeholder="......................"
+          />
+          <label for="invoice_date">شماره اقتصادی</label>
+          <input
+            type="text"
+            class="invoice_date"
+            v-model="info.Economical_number"
+            required
+            placeholder="......................"
+          />
+          <label for="invoice_date">شماره ثبت / شماره ملی</label>
+          <input
+            type="text"
+            class="invoice_date"
+            v-model="info.registration_number"
+            required
+            placeholder="......................"
+          />
+        </div>
+        <div class="section">
+          <label for="invoice_date">نشانی کامل: استان</label>
+          <input
+            type="text"
+            class="invoice_date"
+            v-model="info.province"
+            required
+            placeholder="......................"
+          />
+          <label for="invoice_date">شهرستان</label>
+          <input
+            type="text"
+            class="invoice_date"
+            v-model="info.county"
+            required
+            placeholder="......................"
+          />
+          <label for="invoice_date">کد پستی 10 رقمی</label>
+          <input
+            type="text"
+            class="invoice_date"
+            v-model="info.Postal_code"
+            required
+            placeholder="......................"
+          />
+          <label for="invoice_date">شهر</label>
+          <input
+            type="text"
+            class="invoice_date"
+            v-model="info.city"
+            required
+            placeholder="......................"
+          />
+        </div>
+        <div class="section">
+          <label for="invoice_date">نشانی</label>
+          <input
+            type="text"
+            class="invoice_date"
+            v-model="info.address"
+            required
+            placeholder="......................"
+          />
+          <label for="invoice_date">شماره تلفن / نمابر</label>
+          <input
+            type="text"
+            class="invoice_date"
+            v-model="info.tel"
+            required
+            placeholder="......................"
+          />
+        </div>
       </div>
     </div>
 
@@ -96,7 +120,9 @@
 
       <div class="columns">
         <div class="headers">
-          <div class="title-header" v-for="i in 11" :key="i">{{ i }}</div>
+          <div class="title-header-number" v-for="i in 11" :key="i">
+            {{ i }}
+          </div>
         </div>
         <div class="headers">
           <div class="title-header">ردیف</div>
@@ -133,12 +159,7 @@
             v-model="item.number"
             required
           />
-          <input
-            class="col-invoice"
-            type="number"
-            v-model="item.unit"
-            required
-          />
+          <input class="col-invoice" type="text" v-model="item.unit" required />
           <input
             class="col-invoice"
             type="number"
@@ -176,7 +197,7 @@
             class="col-invoice"
           />
           <button type="button" @click="deleteItem(index)" id="deletebtn">
-            حذف ردیف
+            حذف
           </button>
         </div>
         <div class="col">
@@ -185,10 +206,29 @@
           <div class="totalCol">
             {{ totalTotalAmount() }}
           </div>
-          <div class="totalCol">{{ totalamountDiscount()}}</div>
-          <div class="totalCol">{{ totalTotalAmountAfterDiscount()}}</div>
-          <div class="totalCol">{{ totaltaxCollection()}}</div>
-          <div class="totalCol">{{ totalsumOfTotalAmountPlusTax()}}</div>
+          <div class="totalCol">{{ totalamountDiscount() }}</div>
+          <div class="totalCol">{{ totalTotalAmountAfterDiscount() }}</div>
+          <div class="totalCol">{{ totaltaxCollection() }}</div>
+          <div class="totalCol">{{ totalsumOfTotalAmountPlusTax() }}</div>
+        </div>
+        <div class="col">
+          <div class="desc1">
+            <p>شرایط و نحوه فروش</p>
+            <p>نقدی</p>
+            <input type="checkbox" />
+            <p>غیر نقدی</p>
+            <input type="checkbox" />
+          </div>
+        </div>
+        <div class="col">
+          <div class="desc">
+            <p>توضیحات</p>
+            <textarea placeholder="..................."></textarea>
+          </div>
+        </div>
+        <div class="col">
+          <div class="col2">مهر و امضا فروشنده</div>
+          <div class="col3">مهر وامضا خریدار</div>
         </div>
       </div>
     </div>
@@ -209,8 +249,7 @@
 <script>
 import ExcelJS from "exceljs";
 import FileSaver from "file-saver";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+import html2pdf from "html2pdf.js";
 export default {
   data() {
     return {
@@ -278,29 +317,33 @@ export default {
     deleteItem(index) {
       this.invoice.items.splice(index, 1);
     },
-    totalTotalAmount(){
-      let sum=0;
-      this.invoice.items.forEach(item=>sum+=item.TotalAmount)
+    totalTotalAmount() {
+      let sum = 0;
+      this.invoice.items.forEach((item) => (sum += item.TotalAmount));
       return sum;
     },
-    totalamountDiscount(){
-      let sum=0;
-      this.invoice.items.forEach(item=>sum+=item.amountDiscount)
+    totalamountDiscount() {
+      let sum = 0;
+      this.invoice.items.forEach((item) => (sum += item.amountDiscount));
       return sum;
     },
-     totalTotalAmountAfterDiscount(){
-      let sum=0;
-      this.invoice.items.forEach(item=>sum+=item.TotalAmountAfterDiscount)
+    totalTotalAmountAfterDiscount() {
+      let sum = 0;
+      this.invoice.items.forEach(
+        (item) => (sum += item.TotalAmountAfterDiscount)
+      );
       return sum;
     },
-    totaltaxCollection(){
-      let sum=0;
-      this.invoice.items.forEach(item=>sum+=item.taxCollection)
+    totaltaxCollection() {
+      let sum = 0;
+      this.invoice.items.forEach((item) => (sum += item.taxCollection));
       return sum;
     },
-     totalsumOfTotalAmountPlusTax(){
-      let sum=0;
-      this.invoice.items.forEach(item=>sum+=item.sumOfTotalAmountPlusTax)
+    totalsumOfTotalAmountPlusTax() {
+      let sum = 0;
+      this.invoice.items.forEach(
+        (item) => (sum += item.sumOfTotalAmountPlusTax)
+      );
       return sum;
     },
     //  ---------------------------excel--------------------------
@@ -328,6 +371,7 @@ export default {
         "مبلغ  تخفیف ",
         "مبلغ کل پس از تخفیف ",
         "جمع مالیات و عوارض (ریال) ",
+        "جمع مبلغ کل بعلاوه جمع مالیات و عوارض (ریال)",
       ];
       worksheet.columns = [
         { header: "کد کالا", key: "ProductCode" },
@@ -338,13 +382,24 @@ export default {
         { header: "مبلغ کل (ریال) ", key: "TotalAmount" },
         { header: "مبلغ  تخفیف ", key: "amountDiscount" },
         { header: "مبلغ کل پس از تخفیف ", key: "TotalAmountAfterDiscount" },
-        { header: "جمع مالیات و عوارض (ریال) ", key: "taxCollection" },
         {
-          header: "جمع مبلغ کل بعلاوه جمع مالیات و عوارض (ریال) ",
+          header: "جمع مبلغ کل بعلاوه جمع مالیات و عوارض (ریال)",
+          key: "taxCollection",
+        },
+        {
+          header: "جمع مالیات و عوارض (ریال) ",
           key: "sumOfTotalAmountPlusTax",
         },
       ];
       this.invoice.items.forEach((item) => worksheet.addRow(item));
+      let row = 15 + this.invoice.items.length;
+      worksheet.mergeCells(row, 1, row, 5);
+      worksheet.getCell(row, 1).value = "جمع کل";
+      worksheet.getCell(row, 6).value = this.totalTotalAmount();
+      worksheet.getCell(row, 7).value = this.totalamountDiscount();
+      worksheet.getCell(row, 8).value = this.totalTotalAmountAfterDiscount();
+      worksheet.getCell(row, 9).value = this.totaltaxCollection();
+      worksheet.getCell(row, 10).value = this.totalsumOfTotalAmountPlusTax();
 
       //---------------------------------seller & buyer information
 
@@ -481,30 +536,33 @@ export default {
       const btns = document.querySelectorAll("button");
       Array.from(btns).forEach((item) => (item.style.opacity = 0));
 
-      html2canvas(element, {
-        width: element.offsetWidth,
-        height: element.offsetHeight,
-        scale: 3,
-      }).then((canvas) => {
-        let w = canvas.width;
-        let h = canvas.height;
-        console.log(w);
-        const imgData = canvas.toDataURL("image/png");
-        Array.from(btns).forEach((item) => (item.style.opacity = 1));
-        const pdf = new jsPDF("p", "px");
+      var opt = {
+        margin: 0,
+        filename: "فاکتور.pdf",
+        image: { type: "PNG", quality: 1 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "mm", format: "A4", orientation: "landscape" },
+      };
 
-        pdf.addImage(imgData, "png", 50, 50, w / 5, h / 5);
-        pdf.save("فاکتور.pdf");
-      });
+      html2pdf().from(element).set(opt).save();
+      setTimeout(() => {
+        Array.from(btns).forEach((item) => (item.style.opacity = 1));
+      }, 10);
     },
 
     print() {
+      const btns = document.querySelectorAll("button");
+      Array.from(btns).forEach((item) => (item.style.opacity = 0));
+
       window.print();
+      setTimeout(() => {
+        Array.from(btns).forEach((item) => (item.style.opacity = 1));
+      }, 10);
     },
   },
 };
 </script>
-<style scoped>
+<style>
 @font-face {
   font-family: "Vazirmatn Bold";
   src: url("./../assets/fonts/Vazirmatn-Bold.ttf"),
@@ -522,7 +580,7 @@ export default {
 }
 #invoice {
   direction: rtl;
-  width: 100%;
+  width: 90%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -530,62 +588,140 @@ export default {
   font-size: 14px;
   color: #000;
   overflow-x: hidden;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  background-color: #fff;
 }
-#date-serial {
-  position: absolute;
-  right: 16px;
+.desc1 {
+  border: 1px solid #2d2d2d;
+  height: 50px;
+  width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.col2,
+.col3 {
+  display: flex;
+  border: 1px solid #2d2d2d;
+  width: 400px;
+  height: 80px;
+}
+.desc {
+  border: 1px solid #2d2d2d;
+  height: 35px;
+  width: 400px;
+  display: flex;
+  /* flex-direction: column; */
+  align-items: flex-start;
+  justify-content: space-between;
 }
 #title {
   font-family: "Vazirmatn Bold";
   font-size: 22px;
   color: #000;
   text-align: center;
+  margin-top: 50px;
+}
+h2 {
+  font-family: "Vazirmatn Bold";
+  font-size: 18px;
+  color: #000;
+  text-align: center;
+}
+textarea {
+  border: none;
+  resize: none;
+  outline: none;
 }
 #header {
   display: flex;
 }
+.form-group2 {
+  border: 1px solid #2d2d2d;
+  height: 110px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
 .headers {
   display: flex;
-  margin-left: 44px;
+  margin-left: 32px;
 }
 .title-header:nth-child(1) {
   display: block;
-  height: 14px;
-  width: 28px;
+  height: 54px;
+  width: 8px;
+  font-size: 8px;
+  text-orientation: mixed;
+  /* margin-bottom: 38px; */
+}
+.title-header-number:nth-child(1) {
+  display: block;
+  height: 20px;
+  width: 8px;
+  /* margin-bottom: 38px; */
+}
+.title-header-number {
+  border: 1px solid #2d2d2d;
+  height: 20px;
+  width: 94px;
+  display: block;
+  font-size: 12px;
+  text-align: center;
+  display: block;
 }
 .title-header {
-  height: 14px;
-  width: 116px;
+  height: 54px;
+  width: 94px;
+  display: block;
   font-size: 12px;
-  margin-bottom: 24px;
   text-align: center;
+  display: block;
+  border: 1px solid #2d2d2d;
+}
+p {
+  margin: 4px;
 }
 #date-serial {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  position: absolute;
+
+  left: 6%;
+  top: 2%;
+}
+input {
+  font-family: "Vazirmatn Regular";
+  font-size: 12px;
 }
 .form-group {
   display: flex;
   margin-bottom: 4px;
+  align-items: center;
+  justify-content: center;
 }
 .totalCol {
   border: 1px solid #2d2d2d;
   height: 28px;
-  width: 114px;
+  width: 94px;
   display: block;
 }
 #lab1,
 #lab2 {
   display: block;
-  width: 90px;
+  width: 80px;
   text-align: right;
 }
 label {
   display: block;
-  width: 160px;
-  font-size: 14px;
+  width: 140px;
+  font-size: 12px;
 }
 .section {
   display: flex;
@@ -594,19 +730,27 @@ label {
   width: 100%;
   text-align: left;
   margin-bottom: 8px;
-  height: 30px;
+  height: 24px;
 }
 .col-invoice {
   border: 1px solid #2d2d2d;
   height: 28px;
-  width: 110px;
+  width: 90px;
   display: block;
 }
 .total {
-  width: 495px;
+  width: 486px;
+  height: 28px;
+  border: 1px solid #2d2d2d;
 }
 .col {
   display: flex;
+  align-items: center;
+  align-self: flex-start;
+  margin: auto;
+  margin-bottom: 1px;
+  width: 90%;
+  margin-top: 0;
 }
 .row-invoice {
   display: block;
@@ -617,32 +761,29 @@ label {
 .columns {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   flex-direction: column;
 }
 #Serial_number,
 .invoice_date {
   margin-right: 4px !important;
   border-radius: 4px !important;
-  border: 1px solid #2d2d2d !important;
+  border: none;
   height: 28px;
-  width: 120px !important;
-}
-@media print {
-  button {
-    display: none;
-  }
+  width: 80px !important;
+  outline: none;
 }
 #deletebtn {
-  width: 110px;
+  width: 120px;
   height: 31px;
   color: #fff;
   font-family: "Vazirmatn Regular";
-  font-size: 14px;
+  font-size: 12px;
   background-color: red;
   display: block;
   border: none;
   margin-right: 2px;
+
   border-radius: 4px;
   cursor: pointer;
 }
@@ -704,23 +845,34 @@ label {
   justify-content: space-evenly;
   width: 100%;
   margin-top: 40px;
+  margin-bottom: 40px;
 }
 @media screen and (max-width: 1440px) {
   label {
-    width: 110px;
-    font-size: 12px;
-  }
-  .invoice_date {
-    width: 100px !important;
-  }
-}
-@media screen and (max-width: 902px) {
-  label {
-    width: 110px;
+    width: 80px;
     font-size: 10px;
   }
   .invoice_date {
     width: 80px !important;
+  }
+  #invoice {
+    overflow-x: auto;
+    width: 100%;
+  }
+  body {
+    overflow-x: auto;
+  }
+}
+@media screen and (max-width: 992px) {
+  #invoice {
+    overflow-x: auto;
+    width: 150%;
+  }
+}
+@media screen and (max-width: 768px) {
+  #invoice {
+    overflow-x: auto;
+    width: 220%;
   }
 }
 @media print {
